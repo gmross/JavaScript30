@@ -123,7 +123,21 @@
   </div>
 
   <script>
-    //TODO: write script that updates css properties
+    //grab panels
+    const panels = document.querySelectorAll('.panel');
+    //simple function to add css properties
+    function toggleOpen() {
+      this.classList.toggle('open');
+    }
+    function toggleActive(e) {
+      if(e.propertyName.includes('flex')) {
+        this.classList.toggle('open-active');
+      }
+    }
+
+    //listen for activity on the panels and change css
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
   </script>
 
 
