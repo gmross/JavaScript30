@@ -15,8 +15,55 @@
     </ul>
   </form>
 <script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  //get data from gist using a fetch command (built in http requests vs using axios or another library)
+  const cities = [];
+  //fetch returns a promise, so we need to act on it using a .then sequence
+  fetch(endpoint)
+    .then(blob => blob.json()) //data comes in form of response packet, we need to parse it
+    .then(data => cities.push(...data)) //data is already in an array, so we need to use a spread
+  
+  //now we need to filter it based on our parameters
+  function findMatches(wordToMatch, cities) {
+    return cities.filter( place => {
+      //look for city or state matching query
+      //we need to make a regular expression (g for global and i for case insensitive)
+      const regex = new RegExp(wordToMatch, 'gi');
+      //use match to compare object data to regular expression we made
+      return place.city.match(regex) || place.state.match(regex)
+    });
+  }
 
+  function numberWithCommas(x) {
+    //regular expression to place a comma every three digits from the right
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function displayMatches() {
+    const matches = findMatches(this.value, cities);
+    const html = matches.map(place => {
+      //create a regex to highlight results
+      const regex = new RegExp(this.value, 'gi');
+      const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+      const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+      //format html to place results in list form
+      return `
+        <li>
+          <span class="name">${cityName}, ${stateName}</span>
+          <span class="population">${numberWithCommas(place.population)}</span>
+        </li>
+      `;
+    }).join('');
+
+    suggestions.innerHTML = html;
+  }
+
+  const searchInput = document.querySelector('.search');
+  const suggestions = document.querySelector('.suggestions');
+
+  //when the input in the form changes, we are going to filter the matches
+  searchInput.addEventListener('change', displayMatches);
+  searchInput.addEventListener('keyup', displayMatches);
 </script>
 </body>
 </html>
