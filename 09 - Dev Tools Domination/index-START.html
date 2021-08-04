@@ -18,28 +18,87 @@
     }
 
     // Regular
+    console.log("Hello world");
 
     // Interpolated
+    console.log("Hello, I am a %s string", "replaced");
+    const es = "es6";
+    console.log(`Hello, I am a ${es} string`);
 
     // Styled
+    console.log("%c I am a styled string", "font-size:50px; background: red;  ");
 
     // warning!
+    console.warn("Oh no! I am a warning!");
 
     // Error :|
+    console.error("Woah! I am an error!");
 
     // Info
+    console.info("Fun fact: Crocodiles eat 3-4 people a year");
 
     // Testing
+    const p = document.querySelector('p');
+
+    console.assert(p.classList.contains('ouch'), "I only print out if our test fails");
 
     // clearing
+    console.clear();
 
     // Viewing DOM Elements
+    console.log(p);
+    console.dir(p);
+
+    console.clear();
 
     // Grouping together
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`);
+
+      console.log(`This is ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.log(`${dog.name} is ${dog.age * 7} years old in dog years`);
+
+      console.groupEnd(`${dog.name}`);
+    });
 
     // counting
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Wes');
 
     // timing
+    console.time("Fetching data...");
+
+    fetch('https://api.github.com/users/gmross')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd("Fetching data...");
+        console.log(data);
+      });
+
+
+    // tables
+    console.table(dogs);
 
   </script>
 </body>
